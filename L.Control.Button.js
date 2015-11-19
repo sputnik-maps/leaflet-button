@@ -31,13 +31,26 @@ L.Control.Button = L.Control.extend({
         var button;
 
         button = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom button-control');
-        button.innerHTML = body;
+        if (body instanceof HTMLElement) {
+            button.appendChild(body);
+        } else {
+            button.innerHTML = this._prepareBody(body);
+        }
         L.DomUtil.addClass(button, this.options.position);
 
         this._container = button;
 
         return this;
     },
+
+    _prepareBody: function (body) {
+        var code = body.replace(/^\s+|\s+$/, '');
+        if (code.charAt(0) !== '<') {
+            code = '<a href="javascript:;">' + code + '</a>';
+        }
+        return code;
+    },
+
     isToggled: function () {
         return L.DomUtil.hasClass(this._container, this.options.toggleButton);
     },
