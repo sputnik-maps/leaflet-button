@@ -26,17 +26,17 @@ L.Control.Button = L.Control.extend({
 	options: {
 		position: 'topleft'
 	},
+
 	initialize: function (body, options) {
 		L.setOptions(this, options);
-		var button;
 
-		button = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom button-control');
-		if (body instanceof HTMLElement) {
-			button.appendChild(body);
-		} else {
-			button.innerHTML = this._prepareBody(body);
+		var classNames = 'leaflet-bar leaflet-control button-control'.split('/\s+/');
+		if (options && options.className) {
+			classNames = classNames.concat(('' + options.className).split(/\s+/));
 		}
-		L.DomUtil.addClass(button, this.options.position);
+
+		var button = L.DomUtil.create('div', classNames.join(' '));
+		button.innerHTML = this._prepareBody(body);
 
 		this._container = button;
 
